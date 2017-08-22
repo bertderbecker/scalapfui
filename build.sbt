@@ -2,7 +2,9 @@ name := "scalapfui-core"
 
 organization := "io.github.bertderbecker"
 
-version := "0.0.1"
+version := "0.0.3"
+
+isSnapshot := true
 
 scalaVersion := "2.12.3"
 
