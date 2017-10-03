@@ -13,4 +13,5 @@ trait Attribute[T, Native]
 
   override def writablePropertyExtractor: Native => WritableProperty[T] =
     propertyExtr
+
 }
