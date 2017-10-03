@@ -2,9 +2,9 @@ package io.github.bertderbecker.scalapfui.property
 
 import scala.language.higherKinds
 
-trait NestedProperty[T, CC[_]] extends Property[T] {
+trait NestedProperty[T, CC[X] <: Property[X]] extends Property[T] {
 
-  val nestedWritableProperty: NestedWritableProperty[T]
+  val nestedWritableProperty: NestedWritableProperty[T, CC]
 
   val nestedReadableProperty: NestedReadableProperty[T, CC]
 

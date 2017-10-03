@@ -21,6 +21,5 @@ trait ReadableProperty[T] extends Calculatable[T, ReadableProperty] {
 
   def value: Option[T] = calcValue
 
-
   override val self: ReadableProperty[T] = this
 }
