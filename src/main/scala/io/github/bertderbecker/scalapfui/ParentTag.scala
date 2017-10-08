@@ -1,6 +1,6 @@
 package io.github.bertderbecker.scalapfui
 
 trait ParentTag[Native, BaseElement] {
-  def apply(modifiers: Modifier[_, Native]*)(children: Element[_ <: BaseElement]*): Parent[Native]
+  def apply(children: Element[_ <: BaseElement]*)(modifiers: Modifier[_, Native]*): Parent[Native]
 
 }
