@@ -9,7 +9,7 @@ trait ReadableAttribute[T, Native]
 
   def readablePropertyExtr: Native => ReadableProperty[T]
 
-  def ==>(other: StoredAttribute[T]) = Modifier.apply { native =>
+  def ==>(other: StoredAttribute[T]) = Modifier.apply { (native: Native) =>
     other.crowd(readablePropertyExtr(native))
   }
 
