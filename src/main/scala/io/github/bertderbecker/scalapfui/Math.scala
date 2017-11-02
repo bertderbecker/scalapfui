@@ -2,6 +2,8 @@ package io.github.bertderbecker.scalapfui
 
 import cats.{FlatMap, Functor, Monoid, Semigroup}
 
+import scala.language.higherKinds
+
 object Math {
 
   trait Calculatable[T, Self[B] <: Calculatable[B, Self]] {
@@ -44,25 +46,25 @@ object Math {
   trait Dividable[T] extends Semigroup[T]
 
   object Addable {
-    def apply[T](add: (T, T) => T) = new Addable[T] {
+    def apply[T](add: (T, T) => T): Addable[T] = new Addable[T] {
       override def combine(x: T, y: T) = add.apply(x, y)
     }
   }
 
   object Substractable {
-    def apply[T](substract: (T, T) => T) = new Substractable[T] {
+    def apply[T](substract: (T, T) => T): Substractable[T] = new Substractable[T] {
       override def combine(x: T, y: T) = substract.apply(x, y)
     }
   }
 
   object Multiplicatable {
-    def apply[T](multiplicate: (T, T) => T) = new Multiplicatable[T] {
+    def apply[T](multiplicate: (T, T) => T): Multiplicatable[T] = new Multiplicatable[T] {
       override def combine(x: T, y: T) = multiplicate.apply(x, y)
     }
   }
 
   object Dividable {
-    def apply[T](divide: (T, T) => T) = new Dividable[T] {
+    def apply[T](divide: (T, T) => T): Dividable[T] = new Dividable[T] {
       override def combine(x: T, y: T) = divide.apply(x, y)
     }
   }
@@ -86,6 +88,36 @@ object Math {
     implicit def multiplicatableMonoid[T: Multiplicatable : Empty]: Monoid[T] = genMonoid(implicitly[Multiplicatable[T]].combine)
 
     implicit def dividableMonoid[T: Dividable : Empty]: Monoid[T] = genMonoid(implicitly[Dividable[T]].combine)
+
+    implicit val intAddable: Addable[Int] = Addable((a: Int, b: Int) => a + b)
+    implicit val byteAddable: Addable[Byte] = Addable((a: Byte, b: Byte) => (a + b).asInstanceOf)
+    implicit val shortAddable: Addable[Short] = Addable((a: Short, b: Short) => (a + b).asInstanceOf)
+    implicit val longAddable: Addable[Long] = Addable((a: Long, b: Long) => a + b)
+    implicit val floatAddable: Addable[Float] = Addable((a: Float, b: Float) => a + b)
+    implicit val doubleAddable: Addable[Double] = Addable((a: Double, b: Double) => a + b)
+
+    implicit val intSubstractable: Substractable[Int] = Substractable((a: Int, b: Int) => a - b)
+    implicit val byteSubstractable: Substractable[Byte] = Substractable((a: Byte, b: Byte) => (a - b).asInstanceOf)
+    implicit val shortSubstractable: Substractable[Short] = Substractable((a: Short, b: Short) => (a - b).asInstanceOf)
+    implicit val longSubstractable: Substractable[Long] = Substractable((a: Long, b: Long) => a - b)
+    implicit val floatSubstractable: Substractable[Float] = Substractable((a: Float, b: Float) => a - b)
+    implicit val doubleSubstractable: Substractable[Double] = Substractable((a: Double, b: Double) => a - b)
+
+    implicit val intMultiplicatable: Multiplicatable[Int] = Multiplicatable((a: Int, b: Int) => a * b)
+    implicit val byteMultiplicatable: Multiplicatable[Byte] = Multiplicatable((a: Byte, b: Byte) => (a * b).asInstanceOf)
+    implicit val shortMultiplicatable: Multiplicatable[Short] = Multiplicatable((a: Short, b: Short) => (a * b).asInstanceOf)
+    implicit val longMultiplicatable: Multiplicatable[Long] = Multiplicatable((a: Long, b: Long) => a * b)
+    implicit val floatMultiplicatable: Multiplicatable[Float] = Multiplicatable((a: Float, b: Float) => a * b)
+    implicit val doubleMultiplicatable: Multiplicatable[Double] = Multiplicatable((a: Double, b: Double) => a * b)
+
+    implicit val intDividable: Dividable[Int] = Dividable((a: Int, b: Int) => a / b)
+    implicit val byteDividable: Dividable[Byte] = Dividable((a: Byte, b: Byte) => (a / b).asInstanceOf)
+    implicit val shortDividable: Dividable[Short] = Dividable((a: Short, b: Short) => (a / b).asInstanceOf)
+    implicit val longDividable: Dividable[Long] = Dividable((a: Long, b: Long) => a / b)
+    implicit val floatDividable: Dividable[Float] = Dividable((a: Float, b: Float) => a / b)
+    implicit val doubleDividable: Dividable[Double] = Dividable((a: Double, b: Double) => a / b)
+
+
   }
 
 }
