@@ -1,6 +1,12 @@
 package io.github.bertderbecker.scalapfui
 
-trait ParentTag[Native, BaseElement] {
-  def apply(children: Element[_ <: BaseElement]*)(modifiers: Modifier[_, Native]*): Parent[Native]
+import scala.language.higherKinds
+
+trait ParentTag[Native <: BaseParent, BaseElement, BaseParent] {
+
+  type ElementImpl[N]
+  type ParentImpl[N <: BaseParent]
+
+  def apply(children: ElementImpl[_ <: BaseElement]*)(modifiers: Modifier[_, Native]*): ParentImpl[Native]
 
 }

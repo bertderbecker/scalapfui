@@ -1,6 +1,10 @@
 package io.github.bertderbecker.scalapfui
 
+import scala.language.higherKinds
+
 trait ElementTag[Native] {
 
-  def apply(modifiers: Modifier[_, Native]*): Element[Native]
+  type ElementImpl[N]
+
+  def apply(modifiers: Modifier[_, Native]*): ElementImpl[Native]
 }
