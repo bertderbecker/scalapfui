@@ -2,7 +2,7 @@ name := "scalapfui-core"
 
 organization := "io.github.bertderbecker"
 
-version := "0.0.9"
+version := "0.0.14"
 
 isSnapshot := true
 

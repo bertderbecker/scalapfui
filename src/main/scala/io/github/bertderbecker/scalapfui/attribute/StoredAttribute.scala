@@ -1,10 +1,14 @@
 package io.github.bertderbecker.scalapfui.attribute
 
-import io.github.bertderbecker.scalapfui.property.{NestedReadableProperty, Property, ReadableProperty}
+import io.github.bertderbecker.scalapfui.SimpleModifier
+import io.github.bertderbecker.scalapfui.property.{NestedProperty, Property}
 
+trait StoredAttribute[T] extends NestedProperty[T] {
 
-trait StoredAttribute[T] extends NestedReadableProperty[T, Property] {
+  val initValue: Option[T]
 
-  def crowd(prop: ReadableProperty[T]): Unit = property.bindTo(prop)
+  def crowd(prop: Property[T]): Unit = property.bindBidirectional(prop)
+
+  def :=(newValue: T): SimpleModifier = SimpleModifier(() => update(newValue))
 
 }

@@ -6,7 +6,6 @@ import io.github.bertderbecker.scalapfui.extras.Includes._
 
 trait WritableProperty[T] {
 
-
   def doUpdate(newValue: T): Unit
 
   final private var binded: Boolean = false
@@ -14,7 +13,7 @@ trait WritableProperty[T] {
   final def bindTo(other: ReadableProperty[T]): Unit = {
     checkParametersForBinding(other)
     doBinding(other)
-    other.value.ifDefined(doUpdate)
+    other.value.ifDefined(update)
     binded = true
   }
 

@@ -4,19 +4,20 @@ import scala.language.higherKinds
 
 trait NestedProperty[T] extends Property[T] {
 
-  val writableProperty: WritableProperty[T]
+  val property: Property[T]
 
-  val readableProperty: ReadableProperty[T]
+  override def bindBidirectional(other: Property[T]): Unit = property.bindBidirectional(other)
 
+  override def doBidirectionalBinding(other: Property[T]): Unit = property.doBidirectionalBinding(other)
 
-  override def doBinding(other: ReadableProperty[T]): Unit = writableProperty.bindTo(other)
+  override def doBinding(other: ReadableProperty[T]): Unit = property.bindTo(other)
 
-  override def calcValue: Option[T] = readableProperty.value
+  override def calcValue: Option[T] = property.value
 
-  override def processOnChange(op: (ReadableProperty[T], T, T) => Unit): Unit = readableProperty.onChangeFull(op)
+  override def processOnChange(op: (ReadableProperty[T], T, T) => Unit): Unit = property.onChangeFull(op)
 
-  override def removeOnChange(op: (ReadableProperty[T], T, T) => Unit): Unit = readableProperty.removeOnChange(op)
+  override def removeOnChange(op: (ReadableProperty[T], T, T) => Unit): Unit = property.removeOnChange(op)
 
-  override def doUpdate(newValue: T): Unit = writableProperty.doUpdate(newValue)
+  override def doUpdate(newValue: T): Unit = property.doUpdate(newValue)
 
 }

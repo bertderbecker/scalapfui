@@ -1,8 +1,9 @@
 package io.github.bertderbecker.scalapfui.attribute
 import io.github.bertderbecker.scalapfui.Modifier
+import io.github.bertderbecker.scalapfui.extras.Includes._
 import io.github.bertderbecker.scalapfui.property.{ReadableProperty, WritableProperty}
 
-trait WritableAttribute[T, Native] extends UnobservableWritableAttribute[T, Native] {
+trait WritableAttribute[T, Native] extends SimpleWritableAttribute[T, Native] {
 
   def writablePropertyExtractor: Native => WritableProperty[T]
 
@@ -17,8 +18,9 @@ trait WritableAttribute[T, Native] extends UnobservableWritableAttribute[T, Nati
   def bindTo(op: Native => ReadableProperty[T]): Modifier[T, Native] = {
 
     val res = Modifier[T, Native] { native =>
-      writablePropertyExtractor(native)
-        .doBinding(op(native))
+      val e = writablePropertyExtractor(native)
+      op(native).value.ifDefined(e.doUpdate)
+      e.doBinding(op(native))
     }
     res
   }
