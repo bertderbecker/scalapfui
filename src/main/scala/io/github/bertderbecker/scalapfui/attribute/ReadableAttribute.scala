@@ -7,12 +7,12 @@ import io.github.bertderbecker.scalapfui.property.{NestedReadableProperty, Prope
 trait ReadableAttribute[T, Native]
   extends Calculatable[T, ReadableAttribute[?, Native]] {
 
-  def readablePropertyExtr: Native => ReadableProperty[T]
+  val readablePropertyExtr: Native => ReadableProperty[T]
 
-  def ==>(other: StoredReadableAttribute[T]) = Modifier.apply { (native: Native) =>
-    other.crowd(readablePropertyExtr(native))
-  }
-
+  def ==>(other: StoredReadableAttribute[T]): Modifier[T, Native] =
+    Modifier.apply { (native: Native) =>
+      other.crowd(readablePropertyExtr(native))
+    }
 
   override val self: ReadableAttribute[T, Native] = this
 

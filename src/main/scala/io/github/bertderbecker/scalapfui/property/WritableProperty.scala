@@ -4,29 +4,37 @@ import com.github.ghik.silencer.silent
 import io.github.bertderbecker.scalapfui.extras.Includes._
 
 
-trait WritableProperty[T] {
+trait WritableProperty[-T] {
 
   def doUpdate(newValue: T): Unit
 
+  private[scalapfui] def doBinding[B <: T](other: ReadableProperty[B]): Unit =
+    other.onChange(doUpdate)
+
   final private var binded: Boolean = false
 
-  final def bindTo(other: ReadableProperty[T]): Unit = {
+  final def bindTo[B <: T](other: ReadableProperty[B]): Unit = {
     checkParametersForBinding(other)
     doBinding(other)
     other.value.ifDefined(update)
     binded = true
   }
 
+  final def <==[B <: T](other: ReadableProperty[B]): Unit = bindTo(other)
+
   @silent
-  protected def checkParametersForBinding(other: ReadableProperty[T]): Unit = {
-    if (this == null || other == null) throw new NullPointerException("Both properties must be specified.")
+  protected def checkParametersForBinding[B <: T](other: ReadableProperty[B]): Unit = {
+    if (this == null || other == null)
+      throw new NullPointerException("Both properties must be specified.")
     if (this eq other) throw new IllegalArgumentException("Cannot bind property to itself")
   }
 
-  def doBinding(other: ReadableProperty[T]): Unit = other.onChange(doUpdate)
-
-  def update(newValue: T): Unit =
+  final def update(newValue: T): Unit =
     if (binded) throw new IllegalAccessException("Property is binded")
-    else doUpdate(newValue)
+    else {
+      println("begin update")
+      doUpdate(newValue)
+      println("finish update")
+    }
 
 }

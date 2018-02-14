@@ -10,7 +10,7 @@ trait NestedProperty[T] extends Property[T] {
 
   override def doBidirectionalBinding(other: Property[T]): Unit = property.doBidirectionalBinding(other)
 
-  override def doBinding(other: ReadableProperty[T]): Unit = property.bindTo(other)
+  override def doBinding[B <: T](other: ReadableProperty[B]): Unit = property.bindTo(other)
 
   override def calcValue: Option[T] = property.value
 

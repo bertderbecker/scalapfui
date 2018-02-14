@@ -17,7 +17,7 @@ trait NestedSplitProperty[T] extends Property[T] {
 
 
 
-  override def doBinding(other: ReadableProperty[T]): Unit = writableProperty.bindTo(other)
+  override def doBinding[B <: T](other: ReadableProperty[B]): Unit = writableProperty.bindTo(other)
 
   override def calcValue: Option[T] = readableProperty.value
 
